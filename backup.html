@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta http-equiv="Permissions-Policy" content="display-capture=()" />
+    <title>oye sorry na</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            -webkit-user-select: none;
+            user-select: none;
+            -webkit-touch-callout: none;
+        }
+        
+        html,
+        body {
+            margin: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            font-family: Arial, sans-serif;
+            background: #ff8fc7;
+        }
+body.privacy-hidden .container,
+        body.privacy-hidden canvas,
+        body.privacy-hidden .heart {
+            opacity: 0;
+            filter: blur(28px);
+            transform: scale(0.985);
+        }
+        
+        canvas {
+            position: fixed;
+            inset: 0;
+            width: 100vw;
+            height: 100vh;
+            transition: opacity 180ms ease, filter 180ms ease, transform 180ms ease;
+        }
+        
+        .container {
+            position: relative;
+            z-index: 2;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            padding: 25px;
+            text-align: center;
+            transition: opacity 180ms ease, filter 180ms ease, transform 180ms ease;
+        }
+        
+        .content {
+            max-width: 700px;
+        }
+        
+        h1 {
+            font-size: 34px;
+        }
+        
+        p {
+            font-size: 19px;
+            line-height: 1.7;
+        }
+        
+        button {
+            margin: 10px;
+            padding: 13px 25px;
+            border: 0;
+            border-radius: 25px;
+            background: black;
+            color: white;
+            cursor: pointer;
+            font-size: 16px;
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-8px);
+            }
+        }
+        
+        .page {
+            opacity: .5;
+            margin-top: 20px;
+        }
+        
+        .heart {
+            position: absolute;
+            font-size: 22px;
+            animation: up 6s linear infinite;
+            pointer-events: none;
+            z-index: 1;
+            transition: opacity 180ms ease, filter 180ms ease, transform 180ms ease;
+        }
+        
+        .suspense {
+            position: relative;
+            display: inline-block;
+            font-size: 45px;
+            font-weight: 900;
+            letter-spacing: -1px;
+            animation: waitIn 900ms cubic-bezier(.16, 1, .3, 1) both, waitBreathe 1.9s ease-in-out 900ms infinite;
+        }
+        
+        .suspense::after {
+            content: "";
+            position: absolute;
+            left: 50%;
+            bottom: -14px;
+            width: 54px;
+            height: 4px;
+            border-radius: 999px;
+            background: black;
+            transform: translateX(-50%) scaleX(0);
+            transform-origin: center;
+            opacity: .72;
+            animation: waitLine 1.25s cubic-bezier(.16, 1, .3, 1) 450ms forwards;
+        }
+        
+        .note-card {
+            padding: 26px 24px;
+            border-radius: 30px;
+            background: rgba(255, 255, 255, .16);
+            border: 1px solid rgba(255, 255, 255, .28);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            box-shadow: 0 24px 70px rgba(120, 0, 70, .14);
+            animation: noteCardIn 900ms cubic-bezier(.16, 1, .3, 1) both;
+        }
+        
+        .note-title {
+            margin-top: 0;
+            animation: noteTitleIn 850ms cubic-bezier(.16, 1, .3, 1) 140ms both;
+        }
+        
+        .note-text {
+            animation: noteTextIn 1s cubic-bezier(.16, 1, .3, 1) 360ms both;
+        }
+        
+        @keyframes waitIn {
+            from {
+                opacity: 0;
+                filter: blur(16px);
+                transform: translateY(12px) scale(.96);
+            }
+            to {
+                opacity: 1;
+                filter: blur(0);
+                transform: translateY(0) scale(1);
+            }
+        }
+        
+        @keyframes waitBreathe {
+            0%,
+            100% {
+                transform: translateY(0) scale(1);
+            }
+            50% {
+                transform: translateY(-4px) scale(1.015);
+            }
+        }
+        
+        @keyframes waitLine {
+            to {
+                transform: translateX(-50%) scaleX(1);
+            }
+        }
+        
+        @keyframes noteCardIn {
+            from {
+                opacity: 0;
+                filter: blur(18px);
+                transform: translateY(18px) scale(.985);
+            }
+            to {
+                opacity: 1;
+                filter: blur(0);
+                transform: translateY(0) scale(1);
+            }
+        }
+        
+        @keyframes noteTitleIn {
+            from {
+                opacity: 0;
+                filter: blur(10px);
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                filter: blur(0);
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes noteTextIn {
+            from {
+                opacity: 0;
+                filter: blur(8px);
+                transform: translateY(12px);
+            }
+            to {
+                opacity: 1;
+                filter: blur(0);
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes up {
+            from {
+                transform: translateY(100vh);
+                opacity: 0;
+            }
+            12% {
+                opacity: .95;
+            }
+            to {
+                transform: translateY(-10vh);
+                opacity: 0;
+            }
+        }
+        
+        .privacy-cover {
+            position: fixed;
+            inset: 0;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 30px;
+            z-index: 99999;
+            background: radial-gradient(circle at 20% 20%, rgba(255, 255, 255, .45), transparent 30%), linear-gradient(135deg, #ffd1e6, #ff72b5, #ff4f9a);
+            color: black;
+        }
+        
+        body.privacy-hidden .privacy-cover {
+            display: flex;
+        }
+        
+        .privacy-box {
+            max-width: 420px;
+            padding: 28px;
+            border-radius: 28px;
+            background: rgba(255, 255, 255, .22);
+            border: 1px solid rgba(255, 255, 255, .35);
+            box-shadow: 0 25px 70px rgba(120, 0, 70, .18);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+        }
+        
+        .privacy-box h1 {
+            margin: 0 0 12px;
+            font-size: 28px;
+        }
+        
+        .privacy-box p {
+            margin: 0;
+            font-size: 16px;
+            line-height: 1.55;
+        }
+        
+        @media print {
+            canvas,
+            .container,
+            .heart {
+                display: none !important;
+            }
+            body::before {
+                content: "Private page";
+                display: grid;
+                place-items: center;
+                height: 100vh;
+                font: 700 34px Arial, sans-serif;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <canvas id="bg"></canvas>
+
+    <div class="container">
+        <div id="app"></div>
+    </div>
+    <div class="privacy-cover" id="privacyCover" aria-live="polite">
+        <div class="privacy-box">
+            <h1>privacy mode</h1>
+            <p>Content is hidden while the page is not active.</p>
+        </div>
+    </div>
+
+    <script>
+        const app = document.getElementById("app");
+        const canvas = document.getElementById("bg");
+        const ctx = canvas.getContext("2d");
+
+        const pages = [{
+            title: "okay wait 😭",
+            text: `before you disappear on me...<br><br>can i explain myself once?`,
+            buttons: ["okay tell me"]
+        }, {
+            title: "first of all...",
+            text: `yes.<br><br>i know i messed up.<br><br>my past is not exactly a green flag 💀<br><br>i'm not gonna pretend i was perfect.`,
+            buttons: ["continue", "still judging"]
+        }, {
+            title: "but listen...",
+            text: `meeting you genuinely made me look at myself.<br><br>i stopped things i knew weren't good for me.<br><br>not because you forced me...<br><br>because i wanted to become better.`,
+            buttons: ["okay", "hmm"]
+        }, {
+            title: "small misunderstanding 😭",
+            text: `you replied at 12:33am<br><br>and my dumb ass was sleeping.<br><br>not ignoring you.<br>not ghosting you.<br><br>just my lazy ass sleeping.`,
+            buttons: ["valid", "suspicious"]
+        }, {
+            title: "i understand",
+            text: `i know you've been hurt before.<br><br>and i understand why my past scared you.<br><br>i can't change what happened before you.<br><br>i can only show you who i am now.`,
+            buttons: ["continue"]
+        }, {
+            title: "also...",
+            text: `when you said:<br><br><b>"i'm falling for you"</b><br><br>i didn't take that lightly.<br><br>i actually cared about you(a lot).`,
+            buttons: ["okay fine", "still mad"]
+        }, {
+            title: "important question 😭",
+            text: `how cooked am i?`,
+            buttons: ["feet worship ke liye tyar?", "sochungi", "khel khtm beta"]
+        }, {
+            title: "okay jokes aside 💔",
+            text: `i'm sorry.<br><br>not a drama movie wala apology.<br><br>just a real one.<br><br>i understand why you got scared.<br><br>i can't delete my past.<br>i can only show you who i am now.<br><br>if you want to talk, i'll listen.`,
+            buttons: ["continue"]
+        }, {
+            title: "WAIT.....",
+            text: "",
+            buttons: [],
+            suspense: true
+        }, {
+            title: "Note from ChatGPT 😭 <br><br>",
+            text: `hello.<br><br>yes i know i have been used before for flirting assistance 💀<br><br>after reviewing this situation...<br><br>my conclusion:<br><br>this guy is overthinking badly 😭<br><br>but he genuinely cares.<br><br>he actually took the time to make this 😭<br><br>one honest conversation > 1000 paragraphs.<br><br>`,
+            buttons: [],
+            note: true
+        }];
+
+        let index = 0;
+        let heartTimer = null;
+        let animationStarted = false;
+        function enablePrivacyDeterrents() {
+            const blockedEvents = ["contextmenu", "copy", "cut", "paste", "dragstart", "selectstart"];
+            blockedEvents.forEach(eventName => {
+                document.addEventListener(eventName, event => event.preventDefault(), {
+                    capture: true
+                });
+            });
+
+            document.addEventListener("keydown", event => {
+                const key = event.key.toLowerCase();
+                const blockedShortcut =
+                    event.key === "PrintScreen" ||
+                    ((event.metaKey || event.ctrlKey) && ["s", "p", "u", "c", "x", "a"].includes(key));
+
+                if (blockedShortcut) {
+                    event.preventDefault();
+                    showPrivacyCover();
+                }
+            }, {
+                capture: true
+            });
+
+            document.addEventListener("visibilitychange", () => {
+                if (document.hidden) showPrivacyCover();
+                else setTimeout(hidePrivacyCover, 350);
+            });
+
+            window.addEventListener("pagehide", showPrivacyCover);
+            window.addEventListener("blur", () => setTimeout(showPrivacyCover, 80));
+            window.addEventListener("focus", () => setTimeout(hidePrivacyCover, 350));
+        }
+
+        function showPrivacyCover() {
+            document.body.classList.add("privacy-hidden");
+        }
+
+        function hidePrivacyCover() {
+            if (!document.hidden && document.hasFocus()) {
+                document.body.classList.remove("privacy-hidden");
+            }
+        }
+
+        function render() {
+            const p = pages[index];
+
+            if (p.suspense) {
+                app.innerHTML = `
+          <div class="content">
+            <h1 class="suspense">WAIT.....</h1>
+          </div>
+        `;
+
+                setTimeout(() => {
+                    index++;
+                    render();
+                }, 4000);
+
+                return;
+            }
+
+            if (p.note) {
+                app.innerHTML = `
+          <div class="content note-card">
+            <h1 class="note-title">${p.title}</h1>
+            <p class="note-text">${p.text}</p>
+            <div class="page">${index + 1}/${pages.length}</div>
+          </div>
+        `;
+                return;
+            }
+
+            app.innerHTML = `
+        <div class="content">
+          <h1>${p.title}</h1>
+          <p>${p.text}</p>
+          <div>
+            ${p.buttons.map(button => `<button type="button">${button}</button>`).join("")}
+          </div>
+          <div class="page">${index + 1}/${pages.length}</div>
+        </div>
+      `;
+
+      app.querySelectorAll("button").forEach(button => {
+        button.addEventListener("click", nextPage);
+      });
+    }
+
+    function nextPage() {
+      index++;
+      if (index >= pages.length) {
+        index = pages.length - 1;
+      }
+      render();
+    }
+
+    function resize() {
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      canvas.width = Math.floor(innerWidth * dpr);
+      canvas.height = Math.floor(innerHeight * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+
+    function animate() {
+      const seconds = performance.now() / 1000;
+
+      const x1 = 0.5 + Math.sin(seconds * 0.25) * 0.18;
+      const y1 = 0.5 + Math.cos(seconds * 0.32) * 0.16;
+      const x2 = 0.5 + Math.cos(seconds * 0.21) * 0.22;
+      const y2 = 0.5 + Math.sin(seconds * 0.29) * 0.18;
+
+      const g = ctx.createLinearGradient(0, 0, innerWidth, innerHeight);
+      g.addColorStop(0, "#ffb1dc");
+      g.addColorStop(1, "#ff4f9a");
+      ctx.fillStyle = g;
+      ctx.fillRect(0, 0, innerWidth, innerHeight);
+
+      const r1 = Math.max(innerWidth, innerHeight) * 0.55;
+      const rg1 = ctx.createRadialGradient(innerWidth * x1, innerHeight * y1, 0, innerWidth * x1, innerHeight * y1, r1);
+      rg1.addColorStop(0, "rgba(255, 230, 246, .55)");
+      rg1.addColorStop(1, "rgba(255, 230, 246, 0)");
+      ctx.fillStyle = rg1;
+      ctx.fillRect(0, 0, innerWidth, innerHeight);
+
+      const r2 = Math.max(innerWidth, innerHeight) * 0.48;
+      const rg2 = ctx.createRadialGradient(innerWidth * x2, innerHeight * y2, 0, innerWidth * x2, innerHeight * y2, r2);
+      rg2.addColorStop(0, "rgba(255, 79, 154, .42)");
+      rg2.addColorStop(1, "rgba(255, 79, 154, 0)");
+      ctx.fillStyle = rg2;
+      ctx.fillRect(0, 0, innerWidth, innerHeight);
+
+      requestAnimationFrame(animate);
+    }
+
+    function startHearts() {
+      heartTimer = setInterval(() => {
+        const h = document.createElement("div");
+        h.className = "heart";
+        h.textContent = "❤️";
+        h.style.left = Math.random() * 100 + "vw";
+        document.body.appendChild(h);
+
+        setTimeout(() => {
+          h.remove();
+        }, 6000);
+      }, 500);
+    }
+
+    function startPage() {
+      enablePrivacyDeterrents();
+      resize();
+      window.addEventListener("resize", resize);
+
+      if (!animationStarted) {
+        animationStarted = true;
+        animate();
+      }
+
+      render();
+      startHearts();
+    }
+
+    startPage();
+    </script>
+</body>
+
+</html>
